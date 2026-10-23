@@ -1,0 +1,16 @@
+/*
+ * Visual parity for bef-links now that they render as <button> instead of <a>.
+ * Buttons are semantically correct because they perform an in-page action
+ * (filter update / form submit), not navigation.
+ */
+.bef-exposed-form .bef-link {
+  text-decoration: underline;
+  color: #00e;
+  border: 0;
+  background: transparent;
+  font-size: 1rem;
+}
+
+.bef-exposed-form .bef-link:hover {
+  cursor: pointer;
+}

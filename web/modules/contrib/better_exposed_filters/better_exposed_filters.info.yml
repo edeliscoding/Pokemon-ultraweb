@@ -1,0 +1,12 @@
+name: Better Exposed Filters
+description: Provides advanced options (e.g. links, checkboxes, or other widgets) to exposed Views elements.
+core_version_requirement: ^11.4 || ^12
+type: module
+package: Views
+dependencies:
+  - drupal:views
+
+# Information added by Drupal.org packaging script on 2026-07-30
+version: '8.0.0-alpha1'
+project: 'better_exposed_filters'
+datestamp: 1785438412

@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Install hook for the BEF Test module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function bef_test_install(): void {
+  // Set up example hierarchical terms in the "Location" vocab.
+  $locations = [
+    'United States' => [
+      'California' => ['San Francisco', 'San Diego', 'Santa Barbara'],
+      'Oregon' => ['Portland', 'Eugene'],
+      'Washington' => ['Seattle', 'Spokane', 'Walla Walla'],
+    ],
+    'Canada' => [
+      'British Columbia' => ['Vancouver', 'Victoria', 'Whistler'],
+      'Alberta' => ['Calgary', 'Edmonton', 'Lake Louise'],
+    ],
+    'Mexico' => [],
+  ];
+
+  foreach ($locations as $country => $states) {
+    $country_tid = _bef_test_add_term($country);
+    if (!$country_tid || empty($states)) {
+      continue;
+    }
+    foreach ($states as $state => $cities) {
+      $state_tid = _bef_test_add_term($state, $country_tid);
+      if (!$state_tid || empty($cities)) {
+        continue;
+      }
+      foreach ($cities as $city) {
+        _bef_test_add_term($city, $state_tid);
+      }
+    }
+  }
+}
+
+/**
+ * Adds a term to the bef_test_location vocabulary.
+ *
+ * @param string $name
+ *   Name of the new term.
+ * @param int $parent
+ *   TID of the parent term, or 0 for a root term.
+ *
+ * @return int
+ *   TID of the newly created term.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function _bef_test_add_term(string $name, int $parent = 0): int {
+  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->create([
+    'vid' => 'bef_test_location',
+    'name' => $name,
+    'parent' => [$parent],
+  ]);
+  $term->save();
+  return (int) $term->id();
+}

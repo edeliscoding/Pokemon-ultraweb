@@ -1,0 +1,35 @@
+.ddev/
+vendor/
+web/sites/*/files/
+web/sites/*/settings.local.php
+database.sql.gz
+/database.sql.gz
+
+
+# Drupal settings and secrets
+/web/sites/*/settings.php
+/web/sites/*/settings.*.php
+!.gitkeep
+
+# Environment files
+.env
+.env.*
+
+# Local backups and archives
+*.sql
+*.sql.gz
+*.tar.gz
+
+# Local DDEV configuration
+/.ddev/
+
+# Composer dependencies and Drupal core
+/vendor/
+/web/core/
+
+# Site-specific secrets and uploaded files
+/web/sites/*/settings.php
+/web/sites/*/settings.*.php
+/web/sites/*/files/
+/.editorconfig
+/.gitattributes

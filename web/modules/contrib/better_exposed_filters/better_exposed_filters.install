@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Contains better_exposed_filters.install.
+ */
+
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Entity\EntityStorageException;
+
+/**
+ * Implements hook_uninstall().
+ */
+function better_exposed_filters_uninstall(): void {
+  try {
+    $views = \Drupal::entityTypeManager()->getStorage('view')->loadMultiple();
+
+    foreach ($views as $view) {
+      $dependencies = $view->getDependencies();
+      if (!in_array('better_exposed_filters', $dependencies['module'] ?? [])) {
+        continue;
+      }
+
+      $changed = FALSE;
+      $displays = $view->get('display');
+      foreach ($displays as &$display) {
+        if (!empty($display['display_options']['exposed_form']['type']) && $display['display_options']['exposed_form']['type'] === 'bef') {
+          $display['display_options']['exposed_form']['type'] = 'basic';
+          $changed = TRUE;
+        }
+      }
+
+      if ($changed) {
+        $view->set('display', $displays);
+        $view->save();
+      }
+    }
+  }
+  catch (InvalidPluginDefinitionException | PluginNotFoundException | EntityStorageException) {
+  }
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function better_exposed_filters_update_last_removed(): int {
+  return 10001;
+}

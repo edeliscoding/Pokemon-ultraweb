@@ -1,0 +1,98 @@
+<?php
+// CONTENTBLOCK this code works for unplaced content block without twig template. It works
+// only problem with this method is you don't control the layout. Notice it shows below the View output
+// load (1). You get this value when you edit the block and check the url
+
+// function mytheme_preprocess_page(array &$variables) {
+//   if (\Drupal::routeMatch()->getRouteName() === 'view.pokemon_cards.page_1') {
+// // load 1 is the block id in the url when you click edit
+//     $block = \Drupal\block_content\Entity\BlockContent::load(1);
+
+//     if ($block) {
+//       $variables['page']['content']['pokemon_cards_block'] =
+//         \Drupal::entityTypeManager()
+//           ->getViewBuilder('block_content')
+//           ->view($block);
+//     }
+//   }
+// }
+
+// VIEWBLOCK to be inserted in /pokemoncards page without twig template. It works
+// only problem with this method is you don't control the layout. Notice it shows below the View output
+// function mytheme_preprocess_page(array &$variables) {
+//     // checking the route name of the /pokemoncards in View
+//   if (\Drupal::routeMatch()->getRouteName() === 'view.pokemon_cards.page_1') {
+
+//   // get the View Name which is pokemon_cards
+//     $view = \Drupal\views\Views::getView('pokemon_cards');
+
+//     if ($view) {
+//       $view->setDisplay('block_1');
+// // adding to the page.content
+//       $variables['page']['content']['pokemon_cards_view_block'] =
+//         $view->render();
+//     }
+//   }
+// }
+
+// VIEWBLOCK WITH TWIG TEMPLATE page--pokemoncards.html.twig
+// the key here is copying page.html.twig and placing pokemon_cars_block variable in the correct layout
+// i like this more because you have more control.
+// function mytheme_preprocess_page(array &$variables) {
+//   if (\Drupal::routeMatch()->getRouteName() === 'view.pokemon_cards.page_1') {
+
+//     $view = \Drupal\views\Views::getView('pokemon_cards');
+
+//     if ($view) {
+//       $view->setDisplay('block_1');
+
+//       $variables['pokemon_cards_block'] = $view->render();
+//     }
+//   }
+// }
+
+//CONTENT BLOCK WITH TWIG TEMPLATE page--pokemoncards.html.twig
+// the key here is copying page.html.twig and placing pokemon_cars_block variable in the correct layout
+// notice $variables['pokemon_content_block']. In twig it will be {{ pokemon_content_block }}
+
+function mytheme_preprocess_page(array &$variables) {
+  if (\Drupal::routeMatch()->getRouteName() === 'view.pokemon_cards.page_1') {
+
+    $block = \Drupal\block_content\Entity\BlockContent::load(1);
+
+    if ($block) {
+      $variables['pokemon_content_block'] =
+        \Drupal::entityTypeManager()
+          ->getViewBuilder('block_content')
+          ->view($block);
+    }
+  }
+}
+
+// teach chanise that load 1 is the block id when loading an unplaced content block. 2nd point is view.pokemon_cards.page_1
+// is the view machine name and the machine name of the page which is page_1 in View for /pokemoncards View.
+
+ // the code below works!!
+// function mytheme_preprocess_page(array &$variables) {
+//   if (\Drupal::routeMatch()->getRouteName() === 'view.pokemon_cards.page_1') {
+
+//     $block = \Drupal\block_content\Entity\BlockContent::load(1);
+
+//     if ($block) {
+//       $plugin_id = 'block_content:' . $block->uuid();
+
+//       $block_manager = \Drupal::service('plugin.manager.block');
+//       $plugin = $block_manager->createInstance($plugin_id, []);
+
+//       $variables['page']['content']['pokemon_cards_block'] =
+//         $plugin->build();
+//     }
+//   }
+
+// code for debuging check in recent logs
+\Drupal::logger('mytheme')->notice(
+  'Route: @route',
+  ['@route' => \Drupal::routeMatch()->getRouteName()]
+);
+
+// }
