@@ -1,0 +1,37 @@
+name: My Theme
+type: theme
+base theme: olivero
+core_version_requirement: ^11
+libraries:
+  - mytheme/global
+
+regions:
+  meta_header: "Meta Header"
+  global_navigation: "Global Menu"
+  mobile_navigation: "Mobile Menu"
+  header: "Header"
+  help: "Help"
+  title_top: "Title top"
+  page_top: "Page top"
+  page_bottom: "Page bottom"
+  breadcrumb_top: "breadcrumb top"
+  content_top: "Content top"
+  highlighted: "Highlighted"
+  content: "Content"
+  # added into the sub theme
+  content_bottom: "Content bottom"
+  # sidebar_first: "Left Sidebar"
+  sidebar_second: "Right Sidebar"
+  # added into the sub theme
+  footer_top: "Footer top"
+  footer_first: "Footer first column"
+  footer_middle: "Footer middle column"
+  footer_last:
+    "Footer last column"
+    # added into the sub theme
+  footer_bottom: "Footer bottom"
+  left_off_canvas: "Left off canvas"
+  right_off_canvas: "Right off canvas"
+regions_hidden:
+  page_top: "Page Top"
+  page_bottom: "Page bottom"
